@@ -123,3 +123,5 @@ if choice in ladder:
                 print("GAME OVER.")
                 exit()
 
+    if choice in ladder:
+        print('You climb back up the ladder. You see the cave entrance straight ahead, and the door to your right.')
