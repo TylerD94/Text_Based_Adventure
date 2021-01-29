@@ -1,7 +1,7 @@
 import random
 
 class Player:
-    def __init__(self, name, hp, mp, atk, matk, spellbook, items):
+    def __init__(self, name, hp, mp, atk, spellbook, items):
         # set core stats
         self.name = name
         self.hp = hp
@@ -12,8 +12,6 @@ class Player:
         # Start damage calculations
         self.atk_low = atk - 10
         self.atk_high = atk + 10
-        self.matk_low = matk - 10
-        self.matk_high = matk + 10
 
         self.spellbook = spellbook
         self.items = items
@@ -23,9 +21,6 @@ class Player:
     # fuck em up boi
     def generate_damage(self):
         return random.randrange(self.atk_low, self.atk_high)
-
-    def generate_magic_damage(self):
-        return random.randrange(self.matk_low, self.matk_high)
 
     # Sometimes we get hit, we gotta get rekt too.
     def take_damage(self, damage):
@@ -46,7 +41,7 @@ class Player:
         i = 1
         print("Spellbook")
         for spell in self.spellbook:
-            print(str(i) + ': {spell_name}', '(cost:, {spell_cost})')
+            print(str(i) + ':', spell.name, 'Cost :', str(spell.cost))
             i += 1
 
     def get_hp(self):

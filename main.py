@@ -1,7 +1,10 @@
 from Classes.Player import Player
 from Classes.Fight import GuardA
+from Classes.Spellbook import Spells
 
-spellbook = [{}]
+spellbook = []
+
+fire = Spells('Fire', 20, 10)
 
 items = [{}]
 
@@ -18,7 +21,7 @@ print('Welcome to the story.')
 print('What is your name?')
 name = input('>>> ')
 
-player = Player(name, 420, 80, 50, [{'spell_power'}], spellbook, items)
+player = Player(name, 420, 80, 50, spellbook, items)
 
 print(f'Welcome to the game {name}.')
 print('\n\n\n')
@@ -69,59 +72,60 @@ choice = input('>>> ')
 if choice in ladder:
     print('You descend the ladder into a storeroom full of barrels and boxes. Most are not important,'
           'but you find a chest along the far wall.')
-    if choice in open_chest:
-        print('You open the chest and find a silver key and a scroll. The scroll explains how to cast the'
-              'Fire spell.')
-        spellbook.add = [{'spell_name': 'Fire', 'spell_power': '20', 'spell_cost': '10'}]
-        items.add = [{'item_name': 'Silver Key', 'item_description': 'An ornate silver key.', 'item_potency': '0'}]
-        print('You obtained the Silver Key!')
-        print('You obtained the Fire spell!')
-        print('\n\n\n')
-        print('As you turn to leave, a guard comes down the ladder. Time for a fight!')
 
-        BATTLE = True
-        guard_a = GuardA(200, 30)
-        while BATTLE:
-            print(player.get_hp(), player.get_max_hp(), player.get_mp(), player.get_max_mp())
-            print(guard_a.get_hp())
-            player.choose_actions()
+choice = input('>>> ')
+if choice in open_chest:
+    print('You open the chest and find a silver key and a scroll. The scroll explains how to cast the '
+          'Fire spell.')
+    spellbook.append(fire)
+    #items.add = [{'item_name': 'Silver Key', 'item_description': 'An ornate silver key.', 'item_potency': '0'}]
+    print('You obtained the Silver Key!')
+    print('You obtained the Fire spell!')
+    print('\n\n\n')
+    print('As you turn to leave, a guard comes down the ladder. Time for a fight!')
 
-            choice = input('>>> ')
-            index = int(choice) - 1
+    BATTLE = True
+    guard_a = GuardA(200, 30)
+    while BATTLE:
+        print('HP:', player.get_hp(), '/', player.get_max_hp(), 'MP:', player.get_mp(),'/', player.get_max_mp())
+        print(guard_a.get_hp())
+        player.choose_actions()
 
-            if index == 0:
-                player_damage = player.generate_damage()
-                guard_a.take_damage(player_damage)
-            elif index == 1:
-                player.choose_spell()
-                spell_choice = int(input('>>> ')) - 1
+        choice = input('>>> ')
+        index = int(choice) - 1
 
-                spell = player.spellbook[spell_choice]
-                magic_damage = player.generate_magic_damage
+        if index == 0:
+            player_damage = player.generate_damage()
+            guard_a.take_damage(player_damage)
+        elif index == 1:
+            player.choose_spell()
+            spell_choice = int(input('>>> ')) - 1
 
-                cost = [{'spell_cost'}]
+            spell = player.spellbook[spell_choice]
+            magic_damage = spell.generate_matk()
 
-                if cost > player.get_mp():
-                    print("You can't cast that right now...")
-                    continue
+            cost = spell.get_cost()
 
-                player.reduce_mp(cost)
-                GuardA.take_damage(magic_damage)
-
-
-            elif index == 2:
-                print("You don't have any items yet!")
+            if spell.cost > player.get_mp():
+                print("You can't cast that right now...")
                 continue
 
-            enemy_damage = guard_a.generate_damage()
-            player.take_damage(enemy_damage)
+            player.reduce_mp(cost)
+            GuardA.take_damage(magic_damage)
 
-            if guard_a.get_hp() == 0:
-                print("You have defeated the guard!")
-                BATTLE = False
-            elif player.get_hp() == 0:
-                print("GAME OVER.")
-                exit()
+        elif index == 2:
+            print("You don't have any items yet!")
+            continue
 
-    if choice in ladder:
-        print('You climb back up the ladder. You see the cave entrance straight ahead, and the door to your right.')
+        enemy_damage = guard_a.generate_damage()
+        player.take_damage(enemy_damage)
+
+        if guard_a.get_hp() == 0:
+            print("You have defeated the guard!")
+            BATTLE = False
+        elif player.get_hp() == 0:
+            print("GAME OVER.")
+            exit()
+
+if choice in ladder:
+    print('You climb back up the ladder. You see the cave entrance straight ahead, and the door to your right.')
