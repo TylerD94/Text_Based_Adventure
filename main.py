@@ -102,7 +102,6 @@ if choice in open_chest:
             spell_choice = int(input('>>> ')) - 1
 
             spell = player.spellbook[spell_choice]
-            magic_damage = spell.generate_matk()
 
             cost = spell.get_cost()
 
@@ -111,7 +110,8 @@ if choice in open_chest:
                 continue
 
             player.reduce_mp(cost)
-            GuardA.take_damage(magic_damage)
+            magic_damage = spell.generate_matk()
+            guard_a.take_damage(magic_damage)
 
         elif index == 2:
             print("You don't have any items yet!")
